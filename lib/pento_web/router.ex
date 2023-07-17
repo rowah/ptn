@@ -19,6 +19,7 @@ defmodule PentoWeb.Router do
 
     live("/", PageLive.Home)
     live("/light", LightLive.Index)
+    live("/guess", WrongLive.Wrong)
   end
 
   # Other scopes may use custom stacks.
