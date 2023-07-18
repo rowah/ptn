@@ -8,6 +8,21 @@ defmodule PentoWeb.WrongLive.Wrong do
     }
   end
 
+  def handle_event("guess", %{"number" => guess} = data, socket) do
+    IO.inspect(data)
+    message = "Your guess is: #{guess}. Wrong guess!! Guess again."
+    score = socket.assigns.score - 1
+
+    {
+      :noreply,
+      assign(
+        socket,
+        score: score,
+        message: message
+      )
+    }
+  end
+
   def render(assigns) do
     ~L"""
       <h1>Your score: <%= @score %></h1>
