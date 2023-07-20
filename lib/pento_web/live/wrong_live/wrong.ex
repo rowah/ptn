@@ -16,19 +16,38 @@ defmodule PentoWeb.WrongLive.Wrong do
 
   def handle_event("guess", %{"number" => guess} = data, socket) do
     IO.inspect(data)
-    message = "Your guess is: #{guess}. Wrong guess!! Guess again."
-    score = socket.assigns.score - 1
 
-    # transform the data within socket.assigns
-    {
-      :noreply,
-      assign(
-        socket,
-        score: score,
-        message: message,
-        current_time: get_current_time()
-      )
-    }
+    number_to_guess = socket.assigns.number_to_guess
+
+    if String.to_integer(guess) == number_to_guess do
+      message = "Congrats! Your guess #{guess} is correct"
+      score = socket.assigns.score + 1
+
+      # transform the data within socket.assigns
+      {
+        :noreply,
+        assign(
+          socket,
+          score: score,
+          message: message,
+          current_time: get_current_time()
+        )
+      }
+    else
+      message = "Your guess is: #{guess}. Wrong guess!! Guess again."
+      score = socket.assigns.score - 1
+
+      # transform the data within socket.assigns
+      {
+        :noreply,
+        assign(
+          socket,
+          score: score,
+          message: message,
+          current_time: get_current_time()
+        )
+      }
+    end
   end
 
   def render(assigns) do
