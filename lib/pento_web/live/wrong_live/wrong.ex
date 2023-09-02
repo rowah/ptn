@@ -68,6 +68,7 @@ defmodule PentoWeb.WrongLive.Wrong do
     </h2>
     <pre>
     <%= @user.email %>
+    <%= @user.username %>
     <%= @session_id %>
     </pre>
     """
