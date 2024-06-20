@@ -73,6 +73,16 @@ defmodule Pento.Catalog do
     |> Repo.update()
   end
 
+  def markdown_product(%Product{} = product, price_decrease)
+      when is_float(price_decrease) and price_decrease > 0 do
+    new_price = product.unit_price - price_decrease
+    updated_attrs = %{unit_price: new_price}
+
+    product
+    |> Product.price_decrease_changeset(updated_attrs)
+    |> Repo.update()
+  end
+
   @doc """
   Deletes a product.
 
