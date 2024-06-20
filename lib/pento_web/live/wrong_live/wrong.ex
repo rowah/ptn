@@ -15,7 +15,7 @@ defmodule PentoWeb.WrongLive.Wrong do
   end
 
   defp get_current_time() do
-    DateTime.utc_now() |> DateTime.to_iso8601()
+    DateTime.utc_now() |> to_string()
   end
 
   def handle_event("guess", %{"number" => guess} = data, socket) do
@@ -25,7 +25,7 @@ defmodule PentoWeb.WrongLive.Wrong do
 
     if String.to_integer(guess) == number_to_guess do
       message = "Congrats! Your guess #{guess} is correct"
-      score = socket.assigns.score + 1
+      score = socket.assigns.score + 5
 
       # transform the data within socket.assigns
       {
@@ -55,22 +55,25 @@ defmodule PentoWeb.WrongLive.Wrong do
   end
 
   def render(assigns) do
-    ~L"""
-      <h1>Your score: <%= @score %></h1>
-      <h2>
-        <%= @message %>
-        It's <%= @current_time %>
-      </h2>
-      <h2>
-        <%= for n <- 1..10 do %>
-          <a href="#" phx-click="guess" phx-value-number="<%= n %>"><%= n %></a>
-        <% end %>
+    ~H"""
+    <h1 class="mb-4 text-4xl font-extrabold">Your score: <%= @score %></h1>
+
+    <h2>
+      <%= @message %> <span class="block">It's: <%= @current_time %></span>
     </h2>
-    <pre>
-    <%= @user.email %>
-    <%= @user.username %>
-    <%= @session_id %>
-    </pre>
+    <br />
+    <h2>
+      <%= for n <- 1..10 do %>
+        <.link
+          class="bg-blue-500 hover:bg-blue-700
+          text-white font-bold py-2 px-4 border border-blue-700 rounded m-1"
+          phx-click="guess"
+          phx-value-number={n}
+        >
+          <%= n %>
+        </.link>
+      <% end %>
+    </h2>
     """
   end
 end
